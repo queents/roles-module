@@ -7,15 +7,13 @@ Full User ALC Plugin For Vilt Admin
 You can install the package via composer:
 
 ```bash
-composer require 3x1io/vilt-roles
+composer require queentc/vilt-roles-module
 ```
 
-Publish Translation and config
+Install the package
 
 ```bash
-php artisan vendor:publish --tag="vilt-roles-views"
-php artisan vendor:publish --tag="vilt-roles-config"
-php artisan vendor:publish --tag="vilt-roles-translations"
+php artisan roles:install
 ```
 
 and now clear cache
@@ -31,7 +29,7 @@ Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed re
 
 ## Credits
 
-- [3x1](https://github.com/3x1io)
+- [Queen Tech Solutions](https://github.com/queents)
 
 ## License
 

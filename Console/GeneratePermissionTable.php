@@ -32,7 +32,7 @@ class GeneratePermissionTable extends Command
     {
         $table = $this->ask('Please Input Table name?');
 
-        Artisan::call('vilt:bake-permission', [
+        Artisan::call('vilt:permission', [
             'tableName' => $table,
         ]);
 

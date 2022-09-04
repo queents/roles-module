@@ -1,8 +1,16 @@
 {
     "name": "Roles",
     "alias": "roles",
-    "description": "",
-    "keywords": [],
+    "description": "Full User ALC Plugin For Vilt Admin",
+    "keywords": [
+        "laravel",
+        "user",
+        "cli",
+        "resource",
+        "ui",
+        "vilt-admin",
+        "Vilt stack"
+    ],
     "priority": 1,
     "providers": [
         "Modules\\Roles\\Providers\\RolesServiceProvider"

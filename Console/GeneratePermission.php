@@ -31,13 +31,13 @@ class GeneratePermission extends Command
      */
     public function handle()
     {
-        Artisan::call('vilt:bake-permission', [
+        Artisan::call('vilt:permission', [
             'tableName' => 'roles',
         ]);
-        Artisan::call('vilt:bake-permission', [
+        Artisan::call('vilt:permission', [
             'tableName' => 'users',
         ]);
-        Artisan::call('vilt:bake-permission', [
+        Artisan::call('vilt:permission', [
             'tableName' => 'translations',
         ]);
 

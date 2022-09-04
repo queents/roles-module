@@ -1,5 +1,5 @@
 {
-    "name": "3x1io/vilt-roles",
+    "name": "queents/vilt-roles-module",
     "description": "Full User ALC Plugin For Vilt Admin",
     "keywords": [
         "laravel",
@@ -10,19 +10,20 @@
         "vilt-admin",
       "Vilt stack"
     ],
-    "homepage": "https://3x1.io",
+    "homepage": "https://www.queentechsolutions.net",
     "license": "MIT",
     "authors": [
         {
-            "name": "3x1",
+            "name": "Fady Mondy",
             "email": "info@3x1.io",
-            "role": "CEO"
+            "role": "Senior Fullstack developer"
         }
     ],
     "require": {
-        "php": "^8.0",
-        "io3x1/vilt-admin": "^1.0",
-        "spatie/laravel-package-tools": "^1.10"
+        "joshbrw/laravel-module-installer": "^2.0",
+        "nwidart/laravel-modules": "^9.0",
+        "spatie/laravel-permission": "^5.5",
+        "queents/vilt-generator-module": "^0.1"
     },
     "extra": {
         "laravel": {
