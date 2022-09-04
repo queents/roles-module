@@ -10,6 +10,7 @@
         "vilt-admin",
       "Vilt stack"
     ],
+    "type": "laravel-module",
     "homepage": "https://www.queentechsolutions.net",
     "license": "MIT",
     "authors": [
