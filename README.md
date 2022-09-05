@@ -7,13 +7,19 @@ Full User ALC Plugin For Vilt Admin
 You can install the package via composer:
 
 ```bash
-composer require queentc/vilt-roles-module
+composer require queentc/roles-module
 ```
 
 Install the package
 
 ```bash
 php artisan roles:install
+```
+
+Generate a permission for new table or selected path
+
+```bash
+php artisan roles:generate
 ```
 
 and now clear cache
