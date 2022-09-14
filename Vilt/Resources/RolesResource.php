@@ -5,10 +5,13 @@ namespace Modules\Roles\Vilt\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 use Modules\Base\Helpers\Resources\Alert;
 use Modules\Base\Services\Components\Base\Action;
 use Modules\Base\Services\Components\Base\AddRoute;
+use Modules\Base\Services\Components\Base\Form;
 use Modules\Base\Services\Components\Base\Modal;
+use Modules\Base\Services\Components\Base\Render;
 use Modules\Base\Services\Resource\Resource;
 use Modules\Base\Services\Rows\Relation;
 use Modules\Base\Services\Rows\Select;
@@ -19,6 +22,7 @@ use Spatie\Permission\Models\Role;
 class RolesResource extends Resource
 {
     public ?string $model = Role::class;
+    public ?string $module = "Roles";
     public string $icon = "bx bxs-lock-alt";
     public string $group = "ALC";
 
@@ -44,6 +48,98 @@ class RolesResource extends Resource
                 ->list(false)
                 ->model(Permission::class),
        ];
+    }
+
+    public function create(Request $request): \Inertia\Response
+    {
+        /*
+         * Check if user has role to create a new record
+         */
+        if ($this->checkRoles('canCreate') && !$this->isAPI($request)) {
+            return $this->checkRoles('canCreate');
+        }
+
+        $rows = $this->rows();
+
+        $prem = Permission::all()->makeHidden(['pivot', 'created_at', 'updated_at']);
+
+        $tables = DB::connection()->getDoctrineSchemaManager()->listTableNames();
+
+
+        $permGroup = [];
+        foreach($tables as $item){
+            $permGroupGet = [];
+            foreach($prem as $key=>$p){
+                if(Str::endsWith($p->name, '_' . $item) && $p->guard_name == 'web'){
+                    $p->table= $item;
+                    $permGroupGet[] = $p;
+                }
+            }
+
+            if(count($permGroupGet) > 0){
+                $permGroup[$item] = $permGroupGet;
+            }
+        }
+
+        return Render::make(ucfirst(Str::camel($this->table)).'/Create')->module($this->module)->data([
+            "rows" => $rows,
+            "url" => $this->table,
+            "perm" => $permGroup
+        ])->render();
+    }
+
+    public function edit(Request $request, $id): \Inertia\Response
+    {
+        /*
+         * Check if user has role to create a new record
+         */
+        if ($this->checkRoles('canEdit') && !$this->isAPI($request)) {
+            return $this->checkRoles('canEdit');
+        }
+
+        $record = Role::with('permissions')->find($id);
+
+        $prem = Permission::all()->makeHidden(['pivot', 'created_at', 'updated_at']);
+
+        $rows = $this->rows();
+
+        $tables = DB::connection()->getDoctrineSchemaManager()->listTableNames();
+
+        $permGroup = [];
+        foreach($tables as $item){
+            $permGroupGet = [];
+            foreach($prem as $key=>$p){
+                if(Str::endsWith($p->name , '_' . $item) && $p->guard_name == 'web'){
+                    $p->table= $item;
+                    $permGroupGet[] = $p;
+                }
+            }
+
+            if(count($permGroupGet) > 0){
+                $permGroup[$item] = $permGroupGet;
+            }
+        }
+
+        foreach($tables as $getTable) {
+            $record->permissions->map(function ($item) use ($getTable) {
+                if (Str::endsWith($item->name, '_' . $getTable) && $item->guard_name == 'web') {
+                    $item->table = $getTable;
+                }
+                return $item;
+            })->makeHidden(['pivot', 'created_at', 'updated_at']);
+        }
+
+        return Render::make(ucfirst(Str::camel($this->table)).'/Edit')->module($this->module)->data([
+            "perm" => $permGroup,
+            "rows" => $rows,
+            "url" => $this->table,
+            "record" => $record
+        ])->render();
+    }
+
+    public function form(): Form
+    {
+        return Form::make('page');
     }
 
     public function loadTranslations(): array
